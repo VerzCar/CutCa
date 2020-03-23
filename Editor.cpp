@@ -1,5 +1,5 @@
-#include "MainWindow.h"
-#include "ui_MainWindow.h"
+#include "Editor.h"
+#include "ui_Editor.h"
 #include <QDebug>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -10,9 +10,9 @@
 #include <QPrintDialog>
 #include <QPainter>
 
-MainWindow::MainWindow(QWidget *parent)
+Editor::Editor(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow),
+    , ui(new Ui::Editor),
       _imgViewer(new ImageViewer)
 {
     ui->setupUi(this);
@@ -30,12 +30,12 @@ MainWindow::MainWindow(QWidget *parent)
     resize(QGuiApplication::primaryScreen()->availableSize() * 3 / 5);
 }
 
-MainWindow::~MainWindow()
+Editor::~Editor()
 {
     delete ui;
 }
 
-void MainWindow::on_actionExit_triggered()
+void Editor::on_actionExit_triggered()
 {
     close();
 }
@@ -69,7 +69,7 @@ static void initializeImageFileDialog(QFileDialog &dialog, QFileDialog::AcceptMo
     }
 }
 
-void MainWindow::on_actionOpenFile_triggered()
+void Editor::on_actionOpenFile_triggered()
 {
     QFileDialog dialog(this, tr("Open File"));
     initializeImageFileDialog(dialog, QFileDialog::AcceptOpen);
@@ -77,7 +77,7 @@ void MainWindow::on_actionOpenFile_triggered()
     while (dialog.exec() == QDialog::Accepted && !loadFile(dialog.selectedFiles().first())) {}
 }
 
-bool MainWindow::loadFile(const QString &fileName)
+bool Editor::loadFile(const QString &fileName)
 {
     QImageReader reader(fileName);
     reader.setAutoTransform(true);
@@ -98,7 +98,7 @@ bool MainWindow::loadFile(const QString &fileName)
 }
 
 
-void MainWindow::on_actionZoomIn_triggered()
+void Editor::on_actionZoomIn_triggered()
 {
     double factor = _imgViewer->scaleImage(1.25);
 
@@ -106,7 +106,7 @@ void MainWindow::on_actionZoomIn_triggered()
     ui->actionZoomOut->setEnabled(factor > 0.333);
 }
 
-void MainWindow::on_actionZoomOut_triggered()
+void Editor::on_actionZoomOut_triggered()
 {
     double factor = _imgViewer->scaleImage(0.8);
 
@@ -114,7 +114,7 @@ void MainWindow::on_actionZoomOut_triggered()
     ui->actionZoomOut->setEnabled(factor > 0.15);
 }
 
-void MainWindow::on_actionFitToWindow_triggered(bool checked)
+void Editor::on_actionFitToWindow_triggered(bool checked)
 {
     _imgViewer->fitToWindow(checked);
     if(checked)
@@ -129,13 +129,13 @@ void MainWindow::on_actionFitToWindow_triggered(bool checked)
     }
 }
 
-void MainWindow::on_actionNormalSize_triggered()
+void Editor::on_actionNormalSize_triggered()
 {
     _imgViewer->normalSize();
 }
 
 
-void MainWindow::on_actionPrint_triggered()
+void Editor::on_actionPrint_triggered()
 {
     //    Q_ASSERT(_imageLabel->pixmap());
     //#if QT_CONFIG(printdialog)

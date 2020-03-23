@@ -6,16 +6,16 @@
 #include "ImageViewer.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui { class Editor; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow
+class Editor : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    Editor(QWidget *parent = nullptr);
+    ~Editor();
 
     bool loadFile(const QString &);
 
@@ -37,7 +37,7 @@ private slots:
 
 
 private:
-    Ui::MainWindow *ui;
+    Ui::Editor *ui;
 
     ImageViewer* _imgViewer;
 

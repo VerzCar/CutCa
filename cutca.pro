@@ -16,16 +16,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Editor.cpp \
     ImageViewer.cpp \
-    main.cpp \
-    MainWindow.cpp
+    main.cpp
 
 HEADERS += \
-    ImageViewer.h \
-    MainWindow.h
+    Editor.h \
+    ImageViewer.h
 
 FORMS += \
-    MainWindow.ui
+    Editor.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
