@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1050</width>
+    <width>1065</width>
     <height>600</height>
    </rect>
   </property>
@@ -14,41 +14,42 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="mainWidget">
-   <widget class="QScrollArea" name="ImageViewerScrollArea">
+   <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>19</x>
-      <y>39</y>
-      <width>761</width>
-      <height>451</height>
+      <x>20</x>
+      <y>20</y>
+      <width>831</width>
+      <height>431</height>
      </rect>
     </property>
-    <property name="widgetResizable">
-     <bool>true</bool>
+    <layout class="QHBoxLayout" name="imageViewerLayout"/>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>860</x>
+      <y>20</y>
+      <width>201</width>
+      <height>431</height>
+     </rect>
     </property>
-    <widget class="QWidget" name="ImageViewerContent">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>759</width>
-       <height>449</height>
-      </rect>
-     </property>
-     <widget class="QLabel" name="imageLabel">
-      <property name="geometry">
-       <rect>
-        <x>16</x>
-        <y>22</y>
-        <width>731</width>
-        <height>411</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </widget>
+    <layout class="QVBoxLayout" name="toolsLayout">
+     <item>
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="text">
+        <string>PushButton</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>PushButton</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -56,7 +57,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1050</width>
+     <width>1065</width>
      <height>20</height>
     </rect>
    </property>
@@ -65,15 +66,18 @@
      <string>File</string>
     </property>
     <addaction name="actionOpenFile"/>
+    <addaction name="actionPrint"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
-     <string>Edit</string>
+     <string>View</string>
     </property>
     <addaction name="actionZoomIn"/>
     <addaction name="actionZoomOut"/>
+    <addaction name="actionFitToWindow"/>
+    <addaction name="actionNormalSize"/>
    </widget>
    <addaction name="menuData"/>
    <addaction name="menuEdit"/>
@@ -93,13 +97,39 @@
    </property>
   </action>
   <action name="actionZoomIn">
+   <property name="icon">
+    <iconset theme="+">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
    <property name="text">
     <string>Zoom In</string>
    </property>
   </action>
   <action name="actionZoomOut">
+   <property name="icon">
+    <iconset theme="-">
+     <normaloff>.</normaloff>.</iconset>
+   </property>
    <property name="text">
     <string>Zoom Out</string>
+   </property>
+  </action>
+  <action name="actionFitToWindow">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Fit to window</string>
+   </property>
+  </action>
+  <action name="actionPrint">
+   <property name="text">
+    <string>Print</string>
+   </property>
+  </action>
+  <action name="actionNormalSize">
+   <property name="text">
+    <string>Normal size</string>
    </property>
   </action>
  </widget>

@@ -7,21 +7,25 @@
 #include <QScreen>
 #include <QStandardPaths>
 #include <QImageWriter>
+#include <QPrintDialog>
+#include <QPainter>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), imageLabel(new QLabel)
+    , ui(new Ui::MainWindow),
+      _imgViewer(new ImageViewer)
 {
     ui->setupUi(this);
 
-    ui->imageLabel->setBackgroundRole(QPalette::Base);
-    ui->imageLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-    ui->imageLabel->setScaledContents(true);
+    ui->imageViewerLayout->addWidget(_imgViewer);
 
-    ui->ImageViewerScrollArea->setBackgroundRole(QPalette::Dark);
-    //ui->ImageViewerScrollArea->setWidget(ui->imageLabel);
-    ui->ImageViewerScrollArea->setVisible(true);
-    //setCentralWidget(ui->ImageViewerScrollArea);
+    ui->actionFitToWindow->setEnabled(false);
+    ui->actionZoomIn->setEnabled(false);
+    ui->actionZoomIn->setShortcut(QKeySequence::ZoomIn);
+    ui->actionZoomOut->setEnabled(false);
+    ui->actionZoomOut->setShortcut(QKeySequence::ZoomOut);
+    ui->actionPrint->setShortcut(QKeySequence::Print);
+
 
     resize(QGuiApplication::primaryScreen()->availableSize() * 3 / 5);
 }
@@ -84,62 +88,68 @@ bool MainWindow::loadFile(const QString &fileName)
         return false;
     }
 
-    _scaleFactor = 1.0;
+    _imgViewer->setImage(newImage);
 
-  ui->imageLabel->setPixmap(QPixmap::fromImage(newImage));
-    //ui->imageLabel->adjustSize();
+    ui->actionFitToWindow->setEnabled(true);
+    ui->actionZoomIn->setEnabled(true);
+    ui->actionZoomOut->setEnabled(true);
 
     return true;
-//    scrollArea->setVisible(true);
-//    printAct->setEnabled(true);
-//    fitToWindowAct->setEnabled(true);
-//    updateActions();
-
-//    if (!fitToWindowAct->isChecked())
-//        imageLabel->adjustSize();
 }
+
 
 void MainWindow::on_actionZoomIn_triggered()
 {
-    scaleImage(1.25);
+    double factor = _imgViewer->scaleImage(1.25);
+
+    ui->actionZoomIn->setEnabled(factor < 3.0);
+    ui->actionZoomOut->setEnabled(factor > 0.333);
 }
 
 void MainWindow::on_actionZoomOut_triggered()
 {
-    scaleImage(0.8);
+    double factor = _imgViewer->scaleImage(0.8);
+
+    ui->actionZoomIn->setEnabled(factor < 3.0);
+    ui->actionZoomOut->setEnabled(factor > 0.15);
 }
 
-void MainWindow::scaleImage(double factor)
+void MainWindow::on_actionFitToWindow_triggered(bool checked)
 {
-    Q_ASSERT(ui->imageLabel->pixmap());
-
-    _scaleFactor *= factor;
-    ui->imageLabel->resize(_scaleFactor * ui->imageLabel->pixmap()->size());
-
-    adjustScrollBar(ui->ImageViewerScrollArea->horizontalScrollBar(), factor);
-    adjustScrollBar(ui->ImageViewerScrollArea->verticalScrollBar(), factor);
-
-   ui->actionZoomIn->setEnabled(_scaleFactor < 3.0);
-ui->actionZoomOut->setEnabled(_scaleFactor > 0.333);
+    _imgViewer->fitToWindow(checked);
+    if(checked)
+    {
+        ui->actionZoomIn->setEnabled(false);
+        ui->actionZoomOut->setEnabled(false);
+    }
+    else
+    {
+        ui->actionZoomIn->setEnabled(true);
+        ui->actionZoomOut->setEnabled(true);
+    }
 }
 
-void MainWindow::normalSize()
+void MainWindow::on_actionNormalSize_triggered()
 {
-    ui->imageLabel->adjustSize();
-    _scaleFactor = 1.0;
+    _imgViewer->normalSize();
 }
 
-void MainWindow::fitToWindow()
+
+void MainWindow::on_actionPrint_triggered()
 {
-//    bool fitToWindow = fitToWindowAct->isChecked();
-//    scrollArea->setWidgetResizable(fitToWindow);
-//    if (!fitToWindow)
-//        normalSize();
-//    updateActions();
+    //    Q_ASSERT(_imageLabel->pixmap());
+    //#if QT_CONFIG(printdialog)
+    //    if (!_imageLabel->pixmap())
+    //        qFatal("ASSERT: ", _imageLabel->pixmap(), " in file ...");
+    //    QPrintDialog dialog(&printer, this);
+    //    if (dialog.exec()) {
+    //        QPainter painter(&printer);
+    //        QRect rect = painter.viewport();
+    //        QSize size = _imageLabel->pixmap()->size();
+    //        size.scale(rect.size(), Qt::KeepAspectRatio);
+    //        painter.setViewport(rect.x(), rect.y(), size.width(), size.height());
+    //        painter.setWindow(_imageLabel->pixmap()->rect());
+    //        painter.drawPixmap(0, 0, *_imageLabel->pixmap());
+    //    }
+    //#endif
 }
-
-void MainWindow::adjustScrollBar(QScrollBar *scrollBar, double factor)
-{
-    scrollBar->setValue(int(factor * scrollBar->value() + ((factor - 1) * scrollBar->pageStep()/2)));
-}
-

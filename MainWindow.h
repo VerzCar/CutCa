@@ -2,7 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QScrollBar>
+#include <QPrinter>
+#include "ImageViewer.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,7 +20,7 @@ public:
     bool loadFile(const QString &);
 
 private slots:
-        void on_actionExit_triggered();
+    void on_actionExit_triggered();
 
     void on_actionOpenFile_triggered();
 
@@ -27,20 +28,22 @@ private slots:
 
     void on_actionZoomOut_triggered();
 
+    void on_actionFitToWindow_triggered(bool);
+
+    void on_actionNormalSize_triggered();
+
+    void on_actionPrint_triggered();
+
 
 
 private:
     Ui::MainWindow *ui;
 
-    double _scaleFactor = 1;
+    ImageViewer* _imgViewer;
 
-    void scaleImage(double factor);
-
-    void normalSize();
-
-    void fitToWindow();
-
-    void adjustScrollBar(QScrollBar *scrollBar, double factor);
+#ifndef QT_NO_PRINTER
+    QPrinter printer;
+#endif
 
 };
 #endif // MAINWINDOW_H
