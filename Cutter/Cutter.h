@@ -3,16 +3,16 @@
 
 #include <QDialog>
 
-namespace Ui {
-class Cutter;
-}
+QT_BEGIN_NAMESPACE
+namespace Ui { class Cutter; }
+QT_END_NAMESPACE
 
 class Cutter : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit Cutter(QWidget *parent = nullptr);
+    Cutter(QWidget *parent = nullptr);
     ~Cutter();
 
 private slots:
@@ -21,5 +21,4 @@ private slots:
 private:
     Ui::Cutter *ui;
 };
-
 #endif // CUTTER_H

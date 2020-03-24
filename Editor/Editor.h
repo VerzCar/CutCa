@@ -1,10 +1,10 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef EDITOR_H
+#define EDITOR_H
 
 #include <QMainWindow>
 #include <QPrinter>
 #include "ImageViewer.h"
-#include "Cutter.h"
+#include "Cutter/Cutter.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Editor; }
@@ -48,4 +48,5 @@ private:
 #endif
 
 };
-#endif // MAINWINDOW_H
+
+#endif // EDITOR_H

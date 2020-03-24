@@ -16,21 +16,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    CutSelector.cpp \
-    Cutter.cpp \
-    Editor.cpp \
-    ImageViewer.cpp \
-    main.cpp
+    Editor/ImageViewer.cpp \
+    Editor/main.cpp \
+    Editor/Editor.cpp \
+    Cutter/CutSelector.cpp \
+    Cutter/Cutter.cpp
 
 HEADERS += \
-    CutSelector.h \
-    Cutter.h \
-    Editor.h \
-    ImageViewer.h
+    Editor/Editor.h \
+    Editor/ImageViewer.h \
+    Cutter/CutSelector.h \
+    Cutter/Cutter.h
 
 FORMS += \
-    Cutter.ui \
-    Editor.ui
+    Editor/Editor.ui \
+    Cutter/Cutter.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

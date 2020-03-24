@@ -2,9 +2,9 @@
 #include "ui_Cutter.h"
 #include "CutSelector.h"
 
-Cutter::Cutter(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::Cutter)
+Cutter::Cutter(QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::Cutter)
 {
     ui->setupUi(this);
 }

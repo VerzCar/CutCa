@@ -10,8 +10,6 @@
 #include <QPrintDialog>
 #include <QPainter>
 
-
-
 Editor::Editor(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Editor),
