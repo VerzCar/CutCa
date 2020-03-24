@@ -10,7 +10,7 @@
 #include <QPrintDialog>
 #include <QPainter>
 
-Editor::Editor(QWidget *parent)
+Editor::Editor(QWidget* parent)
     : QMainWindow(parent)
     , ui(new Ui::Editor),
       _imgViewer(new ImageViewer),
@@ -27,10 +27,11 @@ Editor::Editor(QWidget *parent)
     ui->actionZoomOut->setShortcut(QKeySequence::ZoomOut);
     ui->actionPrint->setShortcut(QKeySequence::Print);
 
-
     resize(QGuiApplication::primaryScreen()->availableSize() * 3 / 5);
 
+    connect(_cutter, SIGNAL(cutted()), this, SLOT(setCuttedPixmap()));
     _cutter->show();
+
 }
 
 Editor::~Editor()
@@ -45,7 +46,7 @@ void Editor::on_actionExit_triggered()
     close();
 }
 
-static void initializeImageFileDialog(QFileDialog &dialog, QFileDialog::AcceptMode acceptMode)
+static void initializeImageFileDialog(QFileDialog& dialog, QFileDialog::AcceptMode acceptMode)
 {
     static bool firstDialog = true;
 
@@ -57,9 +58,10 @@ static void initializeImageFileDialog(QFileDialog &dialog, QFileDialog::AcceptMo
     }
 
     QStringList mimeTypeFilters;
-    const QByteArrayList supportedMimeTypes = acceptMode == QFileDialog::AcceptOpen ? QImageReader::supportedMimeTypes() : QImageWriter::supportedMimeTypes();
+    const QByteArrayList supportedMimeTypes = acceptMode == QFileDialog::AcceptOpen ? QImageReader::supportedMimeTypes() :
+                                              QImageWriter::supportedMimeTypes();
 
-    for (const QByteArray &mimeTypeName : supportedMimeTypes)
+    for (const QByteArray& mimeTypeName : supportedMimeTypes)
     {
         mimeTypeFilters.append(mimeTypeName);
     }
@@ -82,12 +84,14 @@ void Editor::on_actionOpenFile_triggered()
     while (dialog.exec() == QDialog::Accepted && !loadFile(dialog.selectedFiles().first())) {}
 }
 
-bool Editor::loadFile(const QString &fileName)
+bool Editor::loadFile(const QString& fileName)
 {
     QImageReader reader(fileName);
     reader.setAutoTransform(true);
     const QImage newImage = reader.read();
-    if (newImage.isNull()) {
+
+    if (newImage.isNull())
+    {
         QMessageBox::information(this, QGuiApplication::applicationDisplayName(),
                                  tr("Cannot load %1: %2").arg(QDir::toNativeSeparators(fileName), reader.errorString()));
         return false;
@@ -122,7 +126,8 @@ void Editor::on_actionZoomOut_triggered()
 void Editor::on_actionFitToWindow_triggered(bool checked)
 {
     _imgViewer->fitToWindow(checked);
-    if(checked)
+
+    if (checked)
     {
         ui->actionZoomIn->setEnabled(false);
         ui->actionZoomOut->setEnabled(false);
@@ -157,4 +162,13 @@ void Editor::on_actionPrint_triggered()
     //        painter.drawPixmap(0, 0, *_imageLabel->pixmap());
     //    }
     //#endif
+}
+
+void Editor::setCuttedPixmap()
+{
+    _imgViewer->setImage(*_cutter->getCroppedPixmap());
+
+    ui->actionFitToWindow->setEnabled(true);
+    ui->actionZoomIn->setEnabled(true);
+    ui->actionZoomOut->setEnabled(true);
 }

@@ -6,6 +6,7 @@
 #include "ImageViewer.h"
 #include "Cutter/Cutter.h"
 
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class Editor; }
 QT_END_NAMESPACE
@@ -14,13 +15,13 @@ class Editor : public QMainWindow
 {
     Q_OBJECT
 
-public:
-    Editor(QWidget *parent = nullptr);
+  public:
+    Editor(QWidget* parent = nullptr);
     ~Editor();
 
-    bool loadFile(const QString &);
+    bool loadFile(const QString&);
 
-private slots:
+  private slots:
     void on_actionExit_triggered();
 
     void on_actionOpenFile_triggered();
@@ -35,10 +36,10 @@ private slots:
 
     void on_actionPrint_triggered();
 
+    void setCuttedPixmap();
 
-
-private:
-    Ui::Editor *ui;
+  private:
+    Ui::Editor* ui;
 
     ImageViewer* _imgViewer;
     Cutter* _cutter;

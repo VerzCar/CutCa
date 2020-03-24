@@ -9,12 +9,13 @@
 class ImageViewer : public QScrollArea
 {
     Q_OBJECT
-public:
+  public:
     explicit ImageViewer(QWidget* parent = nullptr);
 
     ~ImageViewer();
 
     void setImage(const QImage& img);
+    void setImage(const QPixmap& pixmap);
 
     double scaleImage(double factor);
 
@@ -22,11 +23,11 @@ public:
 
     void fitToWindow(bool checked);
 
-private:
+  private:
     QLabel* _imageLabel;
     double _scaleFactor;
 
-    void adjustScrollBar(QScrollBar *scrollBar, double factor);
+    void adjustScrollBar(QScrollBar* scrollBar, double factor);
 
 };
 

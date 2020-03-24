@@ -9,25 +9,26 @@
 class CutSelector : public QDialog
 {
     Q_OBJECT
-public:
-    explicit CutSelector(QWidget *parent = nullptr);
-
-    QPixmap selectedPixmap;
+  public:
+    explicit CutSelector(QWidget* parent = nullptr);
 
     QPixmap grabScreenshot();
 
-protected:
+    const QPixmap& getCroppedSelection();
+
+  protected:
     void mousePressEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent*) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void paintEvent(QPaintEvent*) override;
 
 
-public slots:
+  public slots:
 
-private:
+  private:
     QPixmap _desktopPixmap;
     QRect _selectedRect;
+    QPixmap _selectedPixmap;
 };
 
 #endif // CUTSELECTOR_H
