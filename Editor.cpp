@@ -10,10 +10,13 @@
 #include <QPrintDialog>
 #include <QPainter>
 
+
+
 Editor::Editor(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::Editor),
-      _imgViewer(new ImageViewer)
+      _imgViewer(new ImageViewer),
+      _cutter(new Cutter)
 {
     ui->setupUi(this);
 
@@ -28,11 +31,15 @@ Editor::Editor(QWidget *parent)
 
 
     resize(QGuiApplication::primaryScreen()->availableSize() * 3 / 5);
+
+    _cutter->show();
 }
 
 Editor::~Editor()
 {
     delete ui;
+    delete _imgViewer;
+    delete _cutter;
 }
 
 void Editor::on_actionExit_triggered()

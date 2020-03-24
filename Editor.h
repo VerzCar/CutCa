@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QPrinter>
 #include "ImageViewer.h"
+#include "Cutter.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Editor; }
@@ -40,6 +41,7 @@ private:
     Ui::Editor *ui;
 
     ImageViewer* _imgViewer;
+    Cutter* _cutter;
 
 #ifndef QT_NO_PRINTER
     QPrinter printer;
