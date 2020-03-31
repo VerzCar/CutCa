@@ -30,6 +30,10 @@ class Cutter : public QDialog
     const QPixmap* getCroppedPixmap();
 
   signals:
+    //!
+    //! \brief cutted this signal gets fired when a new
+    //! capture was made.
+    //!
     void cutted();
 
   private slots:

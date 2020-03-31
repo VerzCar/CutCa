@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QDialog>
 #include <QPixmap>
+#include <QImage>
 #include <QMouseEvent>
 
 class CutSelector : public QDialog
@@ -11,6 +12,7 @@ class CutSelector : public QDialog
     Q_OBJECT
   public:
     explicit CutSelector(QWidget* parent = nullptr);
+    ~CutSelector();
 
     QPixmap grabScreenshot();
 
@@ -18,7 +20,7 @@ class CutSelector : public QDialog
 
   protected:
     void mousePressEvent(QMouseEvent* event) override;
-    void mouseReleaseEvent(QMouseEvent*) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void paintEvent(QPaintEvent*) override;
 
@@ -27,8 +29,10 @@ class CutSelector : public QDialog
 
   private:
     QPixmap _desktopPixmap;
+    QImage _desktopImage;
     QRect _selectedRect;
     QPixmap _selectedPixmap;
+    bool _isMouseClicked;
 };
 
 #endif // CUTSELECTOR_H

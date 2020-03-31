@@ -3,15 +3,28 @@
 #include <QDesktopWidget>
 #include <QPainter>
 #include <QScreen>
+#include <QDebug>
 
-CutSelector::CutSelector(QWidget* parent) : QDialog(parent, Qt::FramelessWindowHint)
+CutSelector::CutSelector(QWidget* parent) : QDialog(parent, Qt::FramelessWindowHint), _isMouseClicked(false)
 {
     setAttribute(Qt::WA_TranslucentBackground);
     setGeometry(QApplication::desktop()->geometry());
 
+    QApplication::setOverrideCursor(QCursor(QPixmap("Zeichnung.svg")));
+    //setCursor(Qt::CursorShape::CrossCursor);
+setStyleSheet("color: white;");
+    setMouseTracking(true);
+
     _desktopPixmap = grabScreenshot();
+    _desktopImage = _desktopPixmap.toImage();
 }
 
+CutSelector::~CutSelector()
+{
+    //setCursor(Qt::CursorShape::LastCursor);
+    QApplication::restoreOverrideCursor();
+    setMouseTracking(false);
+}
 
 QPixmap CutSelector::grabScreenshot()
 {
@@ -26,21 +39,37 @@ QPixmap CutSelector::grabScreenshot()
     return desktopPixmap;
 }
 
+
 void CutSelector::mousePressEvent(QMouseEvent* event)
 {
+    if(event->button() == Qt::MouseButton::LeftButton)
+    {
+        _isMouseClicked = true;
     _selectedRect.setTopLeft(event->globalPos());
+    }
 }
 
-void CutSelector::mouseReleaseEvent(QMouseEvent*)
+void CutSelector::mouseReleaseEvent(QMouseEvent* event)
 {
+    if(event->button() == Qt::MouseButton::LeftButton)
+    {
+        _isMouseClicked = false;
     _selectedPixmap = _desktopPixmap.copy(_selectedRect.normalized());
     accept();
+        }
 }
 
 void CutSelector::mouseMoveEvent(QMouseEvent* event)
 {
+    if(_isMouseClicked)
+    {
     _selectedRect.setBottomRight(event->globalPos());
     update();
+    }
+
+        qDebug() << "event->globalPos() " <<     _desktopImage.pixel(event->pos());
+
+
 }
 
 void CutSelector::paintEvent(QPaintEvent*)
@@ -51,7 +80,7 @@ void CutSelector::paintEvent(QPaintEvent*)
     QPainterPath path;
     path.addRect(rect());
     path.addRect(_selectedRect);
-    p.fillPath(path, QColor::fromRgb(255, 255, 255, 200));
+    p.fillPath(path, QColor::fromRgb(255, 255, 255, 100));
 
     p.setPen(Qt::red);
     p.drawRect(_selectedRect);
